@@ -1,0 +1,28 @@
+import '../css/app.css';
+import './bootstrap';
+import ErrorBoundary from './Components/ErrorBoundary';
+
+import { createInertiaApp } from '@inertiajs/react';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { createRoot } from 'react-dom/client';
+
+const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) =>
+        resolvePageComponent(
+            `./Pages/${name}.jsx`,
+            import.meta.glob('./Pages/**/*.jsx'),
+        ),
+    setup({ el, App, props }) {
+        return createRoot(el).render(
+            <ErrorBoundary componentName="App Root">
+                <App {...props} />
+            </ErrorBoundary>
+        );
+    },
+    progress: {
+        color: '#4B5563',
+    },
+});

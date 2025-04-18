@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class CropManualComment extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'content',
+        'crop_manual_id',
+        'user_id'
+    ];
+
+    /**
+     * Get the crop manual this comment belongs to
+     */
+    public function cropManual()
+    {
+        return $this->belongsTo(CropManual::class);
+    }
+
+    /**
+     * Get the user who wrote the comment
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}

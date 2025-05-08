@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Link } from '@inertiajs/react';
 import axios from 'axios';
+import DownloadPdfButton from '@/Components/DownloadPdfButton';
 
 const DiseaseDetection = ({ auth }) => {
     const [selectedImage, setSelectedImage] = useState(null);
@@ -11,6 +12,7 @@ const DiseaseDetection = ({ auth }) => {
     const [error, setError] = useState(null);
     const [previousScans, setPreviousScans] = useState([]);
     const fileInputRef = useRef(null);
+    const resultContentRef = useRef(null);
 
     // Handle file selection
     const handleFileSelect = (file) => {
@@ -136,7 +138,7 @@ const DiseaseDetection = ({ auth }) => {
                         <Link href="/crop-manual" className="hover:underline">Crop Manual</Link>
                         <Link href="/disease-detection" className="hover:underline font-bold">Disease Detection</Link>
                         <Link href="/weather" className="hover:underline">Weather</Link>
-                        <Link href="/blog" className="hover:underline">Blog</Link>
+                      {/*   <Link href="/blog" className="hover:underline">Blog</Link> */}
                     </div>
                     <div className="flex items-center space-x-4">
                         <div className="text-sm">Welcome, {auth.user.name}</div>
@@ -241,41 +243,56 @@ const DiseaseDetection = ({ auth }) => {
 
                         {/* Results Section */}
                         {results && (
-                            <div className="bg-white p-6 rounded-lg shadow-md">
-                                <h2 className="text-xl font-semibold text-green-700 mb-4">Analysis Results</h2>
-                                
-                                <div className="mb-4">
-                                    <div className={`text-lg font-medium ${results.healthy ? 'text-green-600' : 'text-red-600'}`}>
-                                        {results.disease || 'Healthy Plant'}
-                                    </div>
-                                    <div className="text-sm text-gray-600 mt-1">
-                                        Confidence: {results.confidence}%
-                                    </div>
+                            <div className="mt-8">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h2 className="text-2xl font-bold">Detection Results</h2>
+                                    <DownloadPdfButton 
+                                        contentRef={resultContentRef}
+                                        fileName={`plant-disease-report-${new Date().toISOString().split('T')[0]}`}
+                                        documentTitle="Plant Disease Detection Report"
+                                    />
                                 </div>
-
-                                <div className="border-t border-gray-200 pt-4">
-                                    <h3 className="font-medium mb-2">Description:</h3>
-                                    <p className="text-gray-700 mb-4">
-                                        {results.description}
-                                    </p>
-
-                                    {!results.healthy && (
-                                        <>
-                                            <h3 className="font-medium mb-2">Treatment Recommendations:</h3>
-                                            <ul className="list-disc pl-5 mb-4 space-y-1">
-                                                {results.recommendations.map((rec, index) => (
-                                                    <li key={index} className="text-gray-700">{rec}</li>
-                                                ))}
-                                            </ul>
-                                        </>
-                                    )}
-
-                                    <h3 className="font-medium mb-2">Preventive Measures:</h3>
-                                    <ul className="list-disc pl-5 space-y-1">
-                                        {results.preventiveMeasures.map((measure, index) => (
-                                            <li key={index} className="text-gray-700">{measure}</li>
-                                        ))}
-                                    </ul>
+                                
+                                <div ref={resultContentRef} className="bg-white p-6 rounded-lg shadow-md">
+                                    <div className="flex flex-col md:flex-row gap-6">
+                                        <div className="md:w-1/3">
+                                            <img 
+                                                src={previewUrl} 
+                                                alt="Analyzed plant" 
+                                                className="w-full rounded-lg"
+                                            />
+                                        </div>
+                                        <div className="md:w-2/3">
+                                            <h3 className="text-xl font-semibold mb-2">
+                                                {results.disease || 'Unknown Disease'}
+                                            </h3>
+                                            <div className="mb-4">
+                                                <p className="font-bold">Confidence:</p>
+                                                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                                    <div 
+                                                        className="bg-green-600 h-2.5 rounded-full" 
+                                                        style={{ width: `${results.confidence}%` }}
+                                                    ></div>
+                                                </div>
+                                                <p className="text-right text-sm">
+                                                    {results.confidence}%
+                                                </p>
+                                            </div>
+                                            <div className="prose max-w-none">
+                                                <h4>Description:</h4>
+                                                <p>{results.description || 'No description available.'}</p>
+                                                
+                                                <h4 className="mt-4">Treatment:</h4>
+                                                <p>{results.recommendations?.join(', ') || 'No treatment information available.'}</p>
+                                                
+                                                <h4 className="mt-4">Prevention:</h4>
+                                                <p>{results.preventiveMeasures?.join(', ') || 'No prevention information available.'}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="mt-6 text-sm text-gray-500">
+                                        Report generated on {new Date().toLocaleString()}
+                                    </div>
                                 </div>
                             </div>
                         )}

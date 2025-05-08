@@ -21,11 +21,11 @@ export default function WeatherShow({ auth }) {
                 },
                 err => {
                     console.warn("Location access denied:", err);
-                    fetchWeatherByCity("London"); // Default fallback
+                    fetchWeatherByCity("KISUMU"); // Default fallback
                 }
             );
         } else {
-            fetchWeatherByCity("London");
+            fetchWeatherByCity("Kisumu");
         }
     }, []);
     

@@ -182,9 +182,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         <ResponsiveNavLink href="/crop-manual" active={route().current('crop-manual.index')}>
                             Crop Manual
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href="/blog" active={route().current('blog.index')}>
-                            Blog
-                        </ResponsiveNavLink>
+            
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-green-700">

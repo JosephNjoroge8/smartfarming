@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\DiseaseDetectionController;
 use App\Http\Controllers\Api\BlogController;
@@ -80,6 +81,8 @@ Route::get('/crop-manuals', function () {
         return response()->json(['error' => 'Failed to fetch crop manuals', 'details' => $e->getMessage()], 500);
     }
 });
+
+Route::get('/crop-manuals/{id}', [CropManualController::class, 'show']);
 
 // Fix tasks API endpoint
 Route::get('/tasks', function () {
@@ -204,4 +207,28 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/crop/{crop}/activities', [CalendarActivityController::class, 'store']);
     Route::put('/crop/{crop}/activities/{id}', [CalendarActivityController::class, 'update']);
     Route::delete('/crop/{crop}/activities/{id}', [CalendarActivityController::class, 'destroy']);
+});
+
+Route::middleware('auth:sanctum')->get('/user/recent-activities', function () {
+    // Return sample data for now
+    return [
+        [
+            'id' => 1,
+            'type' => 'system',
+            'message' => 'Welcome to your Smart Farming dashboard',
+            'created_at' => now()->toISOString()
+        ],
+        [
+            'id' => 2,
+            'type' => 'tip',
+            'message' => 'Remember to monitor your crop growth regularly',
+            'created_at' => now()->subHours(2)->toISOString()
+        ],
+        [
+            'id' => 3,
+            'type' => 'alert',
+            'message' => 'Weather alert: Expected rainfall tomorrow',
+            'created_at' => now()->subHours(4)->toISOString()
+        ]
+    ];
 });

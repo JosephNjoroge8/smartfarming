@@ -56,6 +56,8 @@ class CropManualController extends Controller
             'allow_comments' => 'boolean',
         ]);
         
+        // REMOVED: name-to-title mapping since database expects 'name'
+        
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('crop_manuals', 'public');
             $validated['image_path'] = $path;
@@ -105,6 +107,8 @@ class CropManualController extends Controller
             'is_published' => 'boolean',
             'allow_comments' => 'boolean',
         ]);
+        
+        // REMOVED: name-to-title mapping since database expects 'name'
         
         if ($request->hasFile('image')) {
             // Delete previous image if exists

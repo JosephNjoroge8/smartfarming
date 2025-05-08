@@ -75,7 +75,7 @@ export default function Home() {
                     <nav className="hidden md:block">
                         <ul className="flex space-x-8 lg:space-x-12">
                             <li><Link href="/" className="hover:underline">Home</Link></li>
-                            <li><Link href="/blog" className="hover:text-blue-200 transition-colors">Blog</Link></li>
+                            {/*  <li><Link href="/blog" className="hover:text-blue-200 transition-colors">Blog</Link></li>*/}
                             <li><Link href="/crop-manual" className="hover:underline">Crop Manual</Link></li>
                             <li><Link href="/contact" className="hover:underline">Contact</Link></li>
                         </ul>
@@ -90,7 +90,7 @@ export default function Home() {
                     <div className="md:hidden mt-4 pt-4 border-t border-green-500">
                         <nav className="flex flex-col space-y-3 mb-4">
                             <Link href="/" className="hover:bg-green-700 px-2 py-1 rounded">Home</Link>
-                            <Link href="/blog" className="hover:bg-green-700 px-2 py-1 rounded">Blog</Link>
+                            <Link href="/disease-detection" className="hover:bg-green-700 px-2 py-1 rounded">Disease detection</Link> 
                             <Link href="/crop-manual" className="hover:bg-green-700 px-2 py-1 rounded">Crop Manual</Link>
                             <Link href="/contact" className="hover:bg-green-700 px-2 py-1 rounded">Contact</Link>
                         </nav>

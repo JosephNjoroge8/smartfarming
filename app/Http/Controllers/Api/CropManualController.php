@@ -5,23 +5,34 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\CropManual;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CropManualController extends Controller
 {
     public function index()
     {
-        $manuals = CropManual::with(['category', 'images'])
-            ->orderBy('created_at', 'desc')
-            ->get();
-            
-        return response()->json($manuals);
+        try {
+            // Remove relationships that don't exist
+            $manuals = CropManual::orderBy('created_at', 'desc')
+                ->get();
+                
+            return response()->json($manuals);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function show($id)
     {
-        $manual = CropManual::with(['category', 'images'])
-            ->findOrFail($id);
-            
-        return response()->json($manual);
+        try {
+            // Remove relationships that don't exist
+            $manual = CropManual::findOrFail($id);
+                
+            return response()->json($manual);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Crop manual not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

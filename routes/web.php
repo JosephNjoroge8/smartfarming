@@ -80,6 +80,7 @@ Route::get('/crop-manuals/{id}', function($id) {
     }
     
     return Inertia::render('CropManuals/Show', [
+        'params' => ['id' => $id],
         'manual' => $manual,
         'canComment' => $manual->allow_comments
     ]);
@@ -275,7 +276,7 @@ Route::middleware(\App\Http\Middleware\AdminMiddleware::class)->group(function (
         $cropManual = new \App\Models\CropManual();
         
         // Set all text fields
-        $cropManual->title = $validated['name']; // Assuming your DB field is 'title' not 'name'
+        $cropManual->name = $validated['name']; // Assuming your DB field is 'title' not 'name'
         $cropManual->scientific_name = $validated['scientific_name'];
         $cropManual->description = $validated['description'];
         $cropManual->planting_instructions = $validated['planting_instructions'];

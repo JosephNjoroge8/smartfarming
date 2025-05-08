@@ -31,9 +31,7 @@ export default function AdminLayout({ user, admin, header, children }) {
                                 <NavLink href={route('admin.users')} active={route().current('admin.users')}>
                                     Users
                                 </NavLink>
-                                <NavLink href={route('admin.blogs')} active={route().current('admin.blogs')}>
-                                    Blog Management
-                                </NavLink>
+                                
                                 <NavLink href={route('admin.crop-manuals.index')} active={route().current('admin.crop-manuals.index')}>
                                     Crop Manuals
                                 </NavLink>
